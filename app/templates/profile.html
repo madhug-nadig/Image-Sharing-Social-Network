@@ -1,0 +1,17 @@
+<div class = "col-sm-10 col-sm-offset-1">
+	<div class= "row">
+		<div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+    ngf-accept="'image/*'">Choose your image</div>
+		<button ng-click = "sendPhoto()">Upload!</button>		
+	</div>
+	
+	<div class = "row">
+		<table>
+			<tr ng-repeat = "photo in photos">
+				<td>{{photo.username}}
+					<image ng-src = "{{photo}}"></image>
+				</td>	
+			</tr>
+		</table>
+	</div>
+</div>	
