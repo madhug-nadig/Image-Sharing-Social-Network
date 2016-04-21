@@ -3,7 +3,6 @@
 		.config(function($stateProvider, $urlRouterProvider){
 			$urlRouterProvider.otherwise('/');
 
-
 			$stateProvider
 				.state('signUp', {
 					url : '/signup',
@@ -25,5 +24,10 @@
 					templateUrl:'app/templates/profile.html',
 					controller: 'ProfileController'
 			})
+				.state('follow', {
+					url: '/follow-users',
+					templateUrl:'app/templates/follow.html',
+					controller: 'FollowController'
+				})
 		});
 }());

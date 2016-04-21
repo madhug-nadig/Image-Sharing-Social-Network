@@ -1,6 +1,6 @@
 (function(){
 	angular.module('dixpix')
-		.controller('ProfileController', ['Upload','$rootScope','$scope', '$interval' , '$http' , function(Upload,$rootScope ,$scope, $interval, $http){
+		.controller('ProfileController', ['Upload','$rootScope','$scope' , '$http' , function(Upload,$rootScope ,$scope, $http){
 						$scope.identification = JSON.parse(localStorage['userData']);
 
 			$scope.$watch(function(){
@@ -25,5 +25,18 @@
 					})
 				}
 			};
-					}]);
+
+			$scope.getPhotos = function(){
+				if($scope.identification){
+					flng = angular.copy($scope.identification.following);
+					flng.push($scope.identification.username);
+					var data = {username: $scope.identification.username, token: $scope.identification.token, following: flng}
+				
+				$http.post('/users/getphotos', data).success(function(response){
+					console.log(response);
+					$scope.photos = response;
+				});
+				}
+			}
+		}]);
 }());

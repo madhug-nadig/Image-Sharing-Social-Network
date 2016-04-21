@@ -13,7 +13,14 @@ var User = new Schema({
     },
     bio:   {
         type: String
+    },
+    following: {
+        type: [{username: String}]
+    },
+    followers:   {
+        type: [{username: String}]
     }
+
 });
 
 User.plugin(passportLocalMongoose);

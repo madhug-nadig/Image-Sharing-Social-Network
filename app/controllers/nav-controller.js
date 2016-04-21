@@ -1,6 +1,6 @@
 (function(){
 	angular.module('dixpix')
-		.controller('NavbarController', ['$rootScope','$scope', '$state' , '$http' , function($rootScope ,$scope, $state, $http){
+		.controller('NavbarController', ['$window','$rootScope','$scope', '$state' , '$http' , function($window,$rootScope ,$scope, $state, $http){
 			if(localStorage['userData']){
 						$rootScope.loggedIn = true;
 					}
@@ -13,10 +13,10 @@
 			$rootScope.loggedIn = false;
 			$http.get('/users/logout').success(function(response){
 				console.log(response);
+				$window.location.reload();
 			}).error(function(err){
 				console.log(err);
 			})
-
 		}
 		}]);
 }());

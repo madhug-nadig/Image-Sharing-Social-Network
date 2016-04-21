@@ -1,14 +1,17 @@
 <div class = "col-sm-10 col-sm-offset-1">
 	<div class= "row">
 		<div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
-    ngf-accept="'image/*'">Choose your image</div>
-		<button ng-click = "sendPhoto()">Upload!</button>		
+    ngf-accept="'image/*'">Upload a new image</div>
+		<br /><button ng-click = "getPhotos()">Show images from friends!</button>		
 	</div>
 	
 	<div class = "row">
-		<table>
-			<tr ng-repeat = "photo in photos">
-				<td>{{photo.username}}
+		<table class = "photocontent" ng-repeat = "x in photos">
+			<tr ng-repeat = "photo in x.images">
+				<td><strong>{{x.username}}</strong>
+					<image ng-src = "{{x.image}}" class = "img-responsive prof"></image>
+				</td>
+				<td>{{photo.date | date: 'MM/dd/yyyy hh:mm'}}
 					<image ng-src = "{{photo}}"></image>
 				</td>	
 			</tr>

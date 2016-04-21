@@ -14,6 +14,7 @@
 				$http.post('/users/register', $scope.newUser).success(function(response){
 					console.log(response.status);
 					$scope.isError = false;
+					$scope.isReg = true;
 				}).error(function(err){
 					console.log(err.err);
 					$scope.isError = true;

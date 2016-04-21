@@ -44,6 +44,7 @@ passport.deserializeUser(User.deserializeUser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/app', express.static(path.join(__dirname, 'app')));
 app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')));
+app.use('/userphotos', express.static(path.join(__dirname, 'userphotos')));
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');

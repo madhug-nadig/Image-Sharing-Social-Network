@@ -50,7 +50,9 @@ router.post('/login', function(req, res, next) {
         success: true,
         token: token,
         username:user.username,
-        image: user.image
+        image: user.image,
+        followers: user.followers,
+        following: user.following
       });
     });
   })(req,res,next);
@@ -69,10 +71,10 @@ router.post('/edit', Verify.verifyOrdinaryUser ,multiPartMiddleWare ,function(re
   theuser = req.body.username;
   console.log("User " + theuser + "..." + file);
 
-  var uploadDate = new Date();
-  console.log(file.path + '\n')
+  var uploadDate = new Date().toString();
+  uploadDate = uploadDate.replace(/:/g,'-');  console.log(file.path + '\n')
   var tempPath = file.path;
-  var finalPath = path.join(__dirname, "../userphotos/", theuser + file.name);
+  var finalPath = path.join(__dirname, "../userphotos/", theuser + uploadDate+file.name);
   console.log(finalPath);
   var savePath = "/userphotos/" + theuser + uploadDate + file.name;
   
@@ -127,10 +129,11 @@ router.post('/addphoto', multiPartMiddleWare,Verify.verifyOrdinaryUser ,function
  thedp = req.body.image;
  console.log("User " + theuser + "..." + file);
 
-  var uploadDate = new Date();
-  console.log(file.path + '\n');
+  var uploadDate = new Date().toString();
+  uploadDate = uploadDate.replace(/:/g,'-');
+  console.log(uploadDate + '\n');
   var tempPath = file.path;
-  var finalPath = path.join(__dirname, "../userphotos/", theuser + file.name);
+  var finalPath = path.join(__dirname, "../userphotos/", theuser +"normal"+ uploadDate+file.name);
   console.log(finalPath);
   var savePath = "/userphotos/" + theuser+ "normal" + uploadDate + file.name;
   
@@ -152,7 +155,7 @@ router.post('/addphoto', multiPartMiddleWare,Verify.verifyOrdinaryUser ,function
                 });
               }
               var phtd = photoData;
-              phtd.images.push(savePath);
+              phtd.images.unshift(savePath);
               console.log('\n' + phtd + '\n');
               phtd.save(function(err){
                   if(err){
@@ -160,7 +163,7 @@ router.post('/addphoto', multiPartMiddleWare,Verify.verifyOrdinaryUser ,function
                       res.json({status: 500})
                    } else {
                       console.log("Image saved");                       
-                      res.json(photoData);
+                      res.json({status:200});
                     }
                   })
               })
@@ -168,6 +171,62 @@ router.post('/addphoto', multiPartMiddleWare,Verify.verifyOrdinaryUser ,function
     })   
 });
    
+router.post('/getphotos',function(req, res){
+  
+    var reqPhotos = [];
+    console.log( "\n" + req.body + "\n");
+    try{
+      for(x =0; x < req.body.following.length;  x++){
+        reqPhotos.push({username: req.body.following[x].username});
+      }
+    }
 
+    catch(err){
+      console.log(err);
+    }
+
+    Photo.find({}).exec(function(err, allPhotos){
+        if(err){console.log(err);}
+        else{
+          res.json(allPhotos);
+        }
+    });
+
+});
+
+router.get('/get' ,function(req, res){
+  
+    User.find({}, function(err, userData){
+       if(err){
+          res.error(err);
+       }
+       else{
+          res.json(userData);
+       }
+    });
+});
+
+router.post('/follow', function(req, res){
+
+    var followed_username = req.body.followed_username;
+    var follower_username = req.body.follower_username;
+
+    User.findOne(followed_username, function(err, followed){
+      if(!err){
+        console.log("\n Followed \n" + followed);
+        followed.followers.push({username : follower_username});
+        followed.save();
+      }
+    });
+    User.findOne({username : follower_username}, function(err, follower){
+      if(!err){
+        console.log("\n Follower \n" + follower);
+        follower.following.push({username : followed_username});
+        follower.save();
+      }
+    });
+
+    console.log("This " + followed_username + " is followed by " + follower_username);
+});
 
 module.exports = router;
