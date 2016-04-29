@@ -98,7 +98,7 @@ router.post('/edit', Verify.verifyOrdinaryUser ,multiPartMiddleWare ,function(re
                   })
               })
           }
-      })   
+      })
 });
 
 
@@ -129,8 +129,8 @@ router.post('/addphoto', multiPartMiddleWare,Verify.verifyOrdinaryUser ,function
  thedp = req.body.image;
  console.log("User " + theuser + "..." + file);
 
-  var uploadDate = new Date().toString();
-  uploadDate = uploadDate.replace(/:/g,'-');
+  var uploadDate = new Date();
+  uploadDate = uploadDate.getMilliseconds();
   console.log(uploadDate + '\n');
   var tempPath = file.path;
   var finalPath = path.join(__dirname, "../userphotos/", theuser +"normal"+ uploadDate+file.name);
