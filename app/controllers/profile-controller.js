@@ -1,6 +1,7 @@
 (function(){
 	angular.module('dixpix')
 		.controller('ProfileController', ['Upload','$rootScope','$scope' , '$http' , function(Upload,$rootScope ,$scope, $http){
+				if(localStorage['userData'])
 						$scope.identification = JSON.parse(localStorage['userData']);
 
 			$scope.$watch(function(){
